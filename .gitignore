@@ -1,0 +1,16 @@
+# Python environment
+venv/
+__pycache__/
+*.pyc
+
+# Dataset and Silos (Very Important)
+chest_xray/
+hospital_data/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Large weights/temporary files
+*.pt
+*.pth

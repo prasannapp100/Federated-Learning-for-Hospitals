@@ -1,0 +1,12 @@
+# Web Server & API
+fastapi
+uvicorn
+requests
+
+# Deep Learning & Computer Vision
+torch
+torchvision
+numpy
+
+# Utilities
+python-multipart
