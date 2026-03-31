@@ -2,6 +2,10 @@
 fastapi
 uvicorn
 requests
+<<<<<<< HEAD
+=======
+jinja2
+>>>>>>> b752926 (updated frontend (not tested))
 
 # Deep Learning & Computer Vision
 torch
@@ -9,4 +13,9 @@ torchvision
 numpy
 
 # Utilities
+<<<<<<< HEAD
 python-multipart
+=======
+python-multipart
+pillow
+>>>>>>> b752926 (updated frontend (not tested))

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Federated Learning Platform</p>
+                <h1>{{ app_title }}</h1>
+                <p class="subtitle">A unified operations and inference workspace for distributed hospital model training.</p>
+            </div>
+            <div class="topbar-actions">
+                <div class="status-chip" id="apiOriginChip">Local backend</div>
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                    <span class="theme-toggle-track">
+                        <span class="theme-toggle-label theme-toggle-label-light">Light</span>
+                        <span class="theme-toggle-thumb"></span>
+                        <span class="theme-toggle-label theme-toggle-label-dark">Dark</span>
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <main class="layout">
+            <section class="hero panel">
+                <div class="hero-copy">
+                    <p class="eyebrow">Live orchestration</p>
+                    <h2>Monitor rounds, trigger training, and validate predictions from one clean control surface.</h2>
+                    <p class="lead">The dashboard keeps training operations visible, highlights current system health, and lets teams run quick inference checks without leaving the browser.</p>
+                </div>
+                <div class="hero-badges">
+                    <div class="hero-badge">
+                        <span>Hospitals configured</span>
+                        <strong>{{ hospital_count }}</strong>
+                    </div>
+                    <div class="hero-badge">
+                        <span>Theme support</span>
+                        <strong>Light / Dark</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="metrics-grid">
+                <article class="metric-card panel">
+                    <span class="metric-label">Current Round</span>
+                    <strong class="metric-value" id="roundValue">0</strong>
+                    <p class="metric-meta" id="roundMeta">Waiting for first aggregation</p>
+                </article>
+                <article class="metric-card panel">
+                    <span class="metric-label">Connected Hospitals</span>
+                    <strong class="metric-value" id="connectedValue">0/0</strong>
+                    <p class="metric-meta" id="connectedMeta">No hospital updates received yet</p>
+                </article>
+                <article class="metric-card panel">
+                    <span class="metric-label">Model Status</span>
+                    <strong class="metric-value" id="modelStatusValue">Bootstrapping</strong>
+                    <p class="metric-meta" id="modelStatusMeta">Global model is ready for initial rounds</p>
+                </article>
+            </section>
+
+            <section class="content-grid">
+                <article class="panel section-card">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">Training Control</p>
+                            <h3>Sequential round orchestration</h3>
+                        </div>
+                        <button class="primary-button" id="runTrainingButton" type="button">Run Training</button>
+                    </div>
+
+                    <div class="info-strip">
+                        <div>
+                            <span class="info-label">Backend URL</span>
+                            <strong id="serverUrlValue">Detecting...</strong>
+                        </div>
+                        <div>
+                            <span class="info-label">Execution state</span>
+                            <strong id="trainingStateValue">Idle</strong>
+                        </div>
+                    </div>
+
+                    <div class="progress-block">
+                        <div class="progress-row">
+                            <span>Training progress</span>
+                            <strong id="trainingProgressValue">0%</strong>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="trainingProgressFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="hospital-grid" id="hospitalGrid">
+                        <div class="hospital-card">
+                            <span class="hospital-name">Hospital_A</span>
+                            <span class="hospital-state">Pending</span>
+                        </div>
+                        <div class="hospital-card">
+                            <span class="hospital-name">Hospital_B</span>
+                            <span class="hospital-state">Pending</span>
+                        </div>
+                    </div>
+
+                    <div class="log-block">
+                        <div class="section-subheading">
+                            <h4>Run activity</h4>
+                            <span id="trainingTimestamp">No training run started</span>
+                        </div>
+                        <div class="log-list" id="trainingLogList">
+                            <div class="empty-state compact">Training logs will appear here once a round starts.</div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="panel section-card">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">Clinical Inference</p>
+                            <h3>Global model diagnosis</h3>
+                        </div>
+                    </div>
+
+                    <label class="upload-card" for="xrayInput">
+                        <input id="xrayInput" type="file" accept=".jpg,.jpeg,.png">
+                        <span class="upload-title">Upload chest X-ray image</span>
+                        <span class="upload-copy">Drag and drop or browse a JPG or PNG file for a quick prediction.</span>
+                    </label>
+
+                    <div class="preview-panel" id="previewPanel">
+                        <img id="imagePreview" alt="X-ray preview" hidden>
+                        <div class="empty-state" id="previewEmpty">Image preview will appear here.</div>
+                    </div>
+
+                    <div class="inference-actions">
+                        <button class="primary-button" id="predictButton" type="button" disabled>Run Prediction</button>
+                        <span class="inline-message" id="predictMessage">Select an image to begin.</span>
+                    </div>
+
+                    <div class="prediction-card" id="predictionCard">
+                        <div>
+                            <span class="info-label">Diagnosis</span>
+                            <strong id="predictionValue">Not available</strong>
+                        </div>
+                        <div>
+                            <span class="info-label">Confidence</span>
+                            <strong id="confidenceValue">--</strong>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel section-card">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">System Activity</p>
+                        <h3>Recent backend events</h3>
+                    </div>
+                </div>
+                <div class="event-list" id="eventList">
+                    <div class="empty-state compact">Live backend events will populate here.</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        window.dashboardConfig = {
+            hospitals: ["Hospital_A", "Hospital_B"],
+            serverOrigin: window.location.origin
+        };
+    </script>
+    <script src="{{ url_for('static', path='/app.js') }}" defer></script>
+</body>
+</html>

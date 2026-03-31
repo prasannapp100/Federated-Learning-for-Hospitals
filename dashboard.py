@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import streamlit as st
 import requests
 import subprocess
@@ -55,3 +56,10 @@ if file:
     if st.button("Predict"):
         res = requests.post(f"{server_url}/predict", files={"file": file.getvalue()}).json()
         st.write(f"**Result:** {res['prediction']} | **Confidence:** {res['confidence']}")
+=======
+import uvicorn
+
+
+if __name__ == "__main__":
+    uvicorn.run("central_authority:app", host="127.0.0.1", port=8000, reload=False)
+>>>>>>> b752926 (updated frontend (not tested))
